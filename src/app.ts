@@ -1,3 +1,5 @@
+import { envsAdapter } from "./config/envs.adapter";
+import { MongodbInit } from "./database/mongo.initi";
 import { AppRoutes } from "./presentation/routes";
 import { Server } from "./presentation/server";
 
@@ -8,8 +10,13 @@ import { Server } from "./presentation/server";
 
 async function main() {
 
+    await MongodbInit.connect({
+        mongoUrl: envsAdapter.MONGO_URL,
+        dbName: envsAdapter.MONGO_NAME,
+    });
+
     const server = new Server({
-        port: 3000,
+        port: envsAdapter.PORT,
         routes: AppRoutes.routes,
     });
 

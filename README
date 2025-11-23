@@ -1,0 +1,7 @@
+
+
+## Instalación
+
+1. Clonar env.template a .env
+2. npm install
+3. npm run dev:api para ejecutar en modo desarrollo
