@@ -15,6 +15,7 @@ export interface IUSER extends Document {
     confirmed: boolean,
     role: Role,
     img: Img,
+    
 
     //* TODO --> crear atributo que guarde los pedidosS
 
@@ -54,6 +55,19 @@ const userSchema: Schema = new Schema({
 
     //* TODO --> crear atributo que guarde los pedidos
 
+    
 });
+
+
+userSchema.set('toJSON', {
+	virtuals: true,
+	versionKey: false,
+	transform: function( _, ret ){
+		ret.id = ret._id
+        delete ret._id
+        delete ret.password 
+        return ret;
+	}
+})
 
 export const UserModel = model<IUSER>('User', userSchema);

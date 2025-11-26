@@ -35,7 +35,19 @@ export class AuthController {
 
     login = (req: Request, res: Response) => { }
 
-    confirmAccount = (req: Request, res: Response) => { }
+    confirmAccount = (req: Request, res: Response) => {
+        const token = req.body;
+
+        if (!token) {
+            res.status(400).json({ error: 'Token es requerido' });
+            return;
+        }
+
+        this.authService.confirmAccount(token.token)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+            
+    }
 
     requestConfirmationCode = (req: Request, res: Response) => { }
 
