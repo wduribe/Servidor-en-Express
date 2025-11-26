@@ -20,6 +20,7 @@ export class AuthRoutes {
         const authController = new AuthController(authService);
 
         router.post('/register', authController.register);
+        router.post('/login', authController.login);
         router.post('/confirm-account', authController.confirmAccount);
 
         return router;

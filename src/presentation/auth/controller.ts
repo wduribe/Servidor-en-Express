@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AuthServices } from "./services";
 import { CustomError } from "../../domain/error/error";
 import { RegisterUserDto } from "../../domain/dtos/user/register.dto";
+import { LoginDto } from "../../domain/dtos/user/login.dto";
 
 
 
@@ -33,7 +34,24 @@ export class AuthController {
 
     }
 
-    login = (req: Request, res: Response) => { }
+    login = (req: Request, res: Response) => {
+        if (!req.body) {
+            res.status(401).json({ error: 'Debe proporcionar los datos en su petición' });
+            return;
+        }
+
+        const [error, userLoginDto] = LoginDto.create(req.body);
+
+        if (error) {
+            res.status(401).json({ error });
+            return;
+        }
+
+        this.authService.login(userLoginDto!)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+
+    }
 
     confirmAccount = (req: Request, res: Response) => {
         const token = req.body;
@@ -46,7 +64,7 @@ export class AuthController {
         this.authService.confirmAccount(token.token)
             .then(resp => res.json(resp))
             .catch(error => this.handleError(error, res));
-            
+
     }
 
     requestConfirmationCode = (req: Request, res: Response) => { }

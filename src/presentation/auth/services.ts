@@ -3,6 +3,7 @@ import { generateToken } from "../../config/generate-token.adapter";
 import { jwtAdapter } from "../../config/jwt.adapter";
 import { TokenModel } from "../../database/models/token.model";
 import { UserModel } from "../../database/models/user.model";
+import { LoginDto } from "../../domain/dtos/user/login.dto";
 import { RegisterUserDto } from "../../domain/dtos/user/register.dto";
 import { CustomError } from "../../domain/error/error";
 import { EmailService } from "../email-service/email.service";
@@ -39,18 +40,36 @@ export class AuthServices {
         }
     }
 
-    async login() {
+    async login(loginDto: LoginDto) {
 
+        try {
+            const user = await UserModel.findOne({ email: loginDto.email });
+            if (!user) throw CustomError.badRequest('Credenciales inválidas');
 
+            const isMatch = bcryptAdapter.compare(loginDto.password, user.password)
+            if (!isMatch) throw CustomError.badRequest('Credenciales inválidas');
 
-        //Generar logica del login
-     }
+            if (!user.confirmed) throw CustomError.unauthorized('Usuario debe confirmar su cuenta');
+
+            const token = await jwtAdapter.generateToken<string>({ id: user.id });
+            if (!token) CustomError.internalServer('Error mientras se creaba el Token de acceso');
+
+            return {
+                user,
+                token,
+            }
+
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`);
+        }
+
+    }
 
     async confirmAccount(tokenConfirm: string) {
 
         try {
             const tokenExists = await TokenModel.findOne({ token: tokenConfirm });
-            
+
             if (!tokenExists) throw CustomError.badRequest('Token inválido');
 
             const user = await UserModel.findById(tokenExists.user);
