@@ -3,6 +3,8 @@ import { AuthServices } from "./services";
 import { CustomError } from "../../domain/error/error";
 import { RegisterUserDto } from "../../domain/dtos/user/register.dto";
 import { LoginDto } from "../../domain/dtos/user/login.dto";
+import { RequestCodeDto } from "../../domain/dtos/user/request-code.dto";
+import { EditPasswordDto } from "../../domain/dtos/user/edit-password.dto";
 
 
 
@@ -54,23 +56,75 @@ export class AuthController {
     }
 
     confirmAccount = (req: Request, res: Response) => {
-        const token = req.body;
+        const { token } = req.body;
 
         if (!token) {
             res.status(400).json({ error: 'Token es requerido' });
             return;
         }
 
-        this.authService.confirmAccount(token.token)
+        this.authService.confirmAccount(token)
             .then(resp => res.json(resp))
             .catch(error => this.handleError(error, res));
 
     }
 
-    requestConfirmationCode = (req: Request, res: Response) => { }
+    requestConfirmationCode = (req: Request, res: Response) => {
+        const [error, requestCodeDto] = RequestCodeDto.create(req.body);
 
+        if (error) {
+            res.status(400).json({ error });
+            return;
+        }
 
+        this.authService.requestConfirmationCode(requestCodeDto!)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
 
+    }
+
+    forgotPassword = (req: Request, res: Response) => {
+        const [error, requestCodeDto] = RequestCodeDto.create(req.body);
+
+        if (error) {
+            res.status(400).json({ error });
+            return;
+        }
+
+        this.authService.forgotPassword(requestCodeDto!)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+    }
+
+    validateToken = (req: Request, res: Response) => {
+        const { token } = req.body;
+
+        if (!token) {
+            res.status(400).json({ error: 'Token es requerido' });
+            return;
+        }
+        this.authService.validateToken(token)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+    }
+
+    editPassword = (req: Request, res: Response) => {
+        const token = req.params.token;
+        const { newPassword } = req.body;
+
+        const [error, editPasswordDto] = EditPasswordDto.create({
+            token, newPassword
+        });
+
+        if (error) {
+            res.status(400).json({ error });
+            return;
+        }
+
+        this.authService.editPassword(editPasswordDto!)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+    }
 
 
 }

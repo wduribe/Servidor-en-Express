@@ -22,6 +22,10 @@ export class AuthRoutes {
         router.post('/register', authController.register);
         router.post('/login', authController.login);
         router.post('/confirm-account', authController.confirmAccount);
+        router.post('/request-code', authController.requestConfirmationCode);
+        router.post('/forgot-password', authController.forgotPassword);
+        router.post('/validate-token', authController.validateToken);
+        router.post('/edit-password/:token', authController.editPassword);
 
         return router;
     }
