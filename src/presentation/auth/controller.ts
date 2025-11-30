@@ -6,8 +6,6 @@ import { LoginDto } from "../../domain/dtos/user/login.dto";
 import { RequestCodeDto } from "../../domain/dtos/user/request-code.dto";
 import { EditPasswordDto } from "../../domain/dtos/user/edit-password.dto";
 
-
-
 export class AuthController {
 
     constructor(

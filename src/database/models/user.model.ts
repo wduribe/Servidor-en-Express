@@ -7,7 +7,7 @@ interface Img {
     publicId: string,
 }
 
-export interface IUSER extends Document {
+export interface IUser extends Document {
     id: Types.ObjectId,
     email: string,
     password: string,
@@ -70,4 +70,4 @@ userSchema.set('toJSON', {
 	}
 })
 
-export const UserModel = model<IUSER>('User', userSchema);
+export const UserModel = model<IUser>('User', userSchema);

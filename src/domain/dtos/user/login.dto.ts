@@ -13,9 +13,10 @@ export class LoginDto {
         const { email, password } = object;
 
         if (!email) return ['El correo es requerido'];
+        if (password.length === 0) return ['La contraseña es requerida'];
+        
         if (!regularExps.email.test(email)) return ['Credenciales inválidas'];
 
-        if (password.length === 0) return ['La contraseña es requerida'];
 
 
         return [undefined, new LoginDto(email, password)];

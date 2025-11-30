@@ -25,7 +25,6 @@ export class Server {
   
   async start() {
     
-
     //* Middlewares
     this.app.use( express.json() ); // raw
     this.app.use( express.urlencoded({ extended: true }) ); // x-www-form-urlencoded

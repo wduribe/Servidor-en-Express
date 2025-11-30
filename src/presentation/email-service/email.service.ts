@@ -1,7 +1,4 @@
-
-
 import nodemailer, { Transporter } from 'nodemailer';
-
 
 export interface SendMailOptions {
     to: string | string[];
