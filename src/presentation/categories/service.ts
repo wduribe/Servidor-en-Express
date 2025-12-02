@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { CategoryModel } from "../../database/models/category.model";
 import { CustomError } from "../../domain/error/error";
+import { UpdateCategoryDto } from "../../domain/dtos/categories/update-category.dto";
 
 
 
@@ -32,7 +33,6 @@ export class CategoryService {
         }
     }
 
-
     async createCategory(name: string, userId: Types.ObjectId) {
 
         try {
@@ -46,7 +46,31 @@ export class CategoryService {
             await category.save();
 
             return category;
-            
+
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`);
+        }
+    }
+
+
+    async deleteCategory(id: Types.ObjectId) {
+        try {
+            //*Validar si hay productos relacionados con la categoria, si los hay no se podrá eliminar
+            await CategoryModel.findByIdAndDelete(id);
+
+            return 'Categoria eliminada correctamete';
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`);
+        }
+    }
+
+    async updateCategory(updateCategoryDto: UpdateCategoryDto) {
+        try {
+
+            updateCategoryDto.category.name = updateCategoryDto.name;
+            await updateCategoryDto.category.save();
+
+            return 'Categoria actualizada correctamente';
         } catch (error) {
             throw CustomError.internalServer(`${error}`);
         }

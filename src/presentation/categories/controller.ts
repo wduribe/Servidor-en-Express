@@ -3,6 +3,7 @@ import { CustomError } from "../../domain/error/error";
 import { CategoryService } from "./service";
 import { validatorAdapter } from "../../config/validator.adapter";
 import { error } from "console";
+import { UpdateCategoryDto } from "../../domain/dtos/categories/update-category.dto";
 
 
 
@@ -49,6 +50,31 @@ export class CategoryController {
         }
 
         this.categoryService.createCategory(name, req.user.id)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+
+    }
+
+
+    deleteCategory = (req: Request, res: Response) => {
+        this.categoryService.deleteCategory(req.category.id)
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+    }
+
+    updateCategory = (req: Request, res: Response) => {
+
+        const [error, updateCategoryDto] = UpdateCategoryDto.create({
+            ...req.body,
+            category: req.category
+        });
+
+        if (error) {
+            res.status(401).json({ error });
+            return;
+        }
+
+        this.categoryService.updateCategory(updateCategoryDto!)
             .then(resp => res.json(resp))
             .catch(error => this.handleError(error, res));
 

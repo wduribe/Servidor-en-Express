@@ -2,6 +2,7 @@ import { Router } from "express";
 import { CategoryController } from "./controller";
 import { CategoryService } from "./service";
 import { Validator } from "../middlewares/validator.middleware";
+import { validExistCategory } from "../middlewares/validExistCategory.middleware";
 
 
 export class CategoryRoutes {
@@ -18,6 +19,8 @@ export class CategoryRoutes {
 
         //*Rutas protegidas
         routes.post('/', [Validator.validateToken, Validator.validateRole], categoryController.createCategory);
+        routes.put('/:id', [Validator.validateToken, Validator.validateRole, validExistCategory], categoryController.updateCategory);
+        routes.delete('/:id', [Validator.validateToken, Validator.validateRole, validExistCategory], categoryController.deleteCategory);
 
         return routes;
     }
