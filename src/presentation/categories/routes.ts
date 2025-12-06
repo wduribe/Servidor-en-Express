@@ -19,8 +19,8 @@ export class CategoryRoutes {
 
         //*Rutas protegidas
         routes.post('/', [Validator.validateToken, Validator.validateRole], categoryController.createCategory);
-        routes.put('/:id', [Validator.validateToken, Validator.validateRole, validExistCategory], categoryController.updateCategory);
-        routes.delete('/:id', [Validator.validateToken, Validator.validateRole, validExistCategory], categoryController.deleteCategory);
+        routes.put('/:categoryId', [Validator.validateToken, Validator.validateRole, validExistCategory], categoryController.updateCategory);
+        routes.delete('/:categoryId', [Validator.validateToken, Validator.validateRole, validExistCategory], categoryController.deleteCategory);
 
         return routes;
     }

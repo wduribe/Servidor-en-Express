@@ -2,7 +2,7 @@ import { Document, model, Schema, Types } from "mongoose";
 
 type Role = 'ADMIN_ROLE' | 'USER_ROLE';
 
-interface Img {
+export interface Img {
     url: string,
     publicId: string,
 }

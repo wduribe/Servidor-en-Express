@@ -11,7 +11,7 @@ declare global {
 }
 
 export const validExistCategory = async (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
+    const id = req.params.categoryId;
 
     if (!validatorAdapter.isValidMongoId(id)) return res.status(401).json({ error: 'Id de categoria inválido' });
 

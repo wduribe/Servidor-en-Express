@@ -1,8 +1,6 @@
 import 'dotenv/config';
 import { get } from 'env-var';
 
-
-
 export const envsAdapter = {
     PORT: get('PORT').required().asPortNumber(),
     FRONTED_URL: get('FRONTED_URL').required().asString(),
@@ -17,4 +15,9 @@ export const envsAdapter = {
     MAILER_SERVICE: get('MAILER_SERVICE').required().asString(),
 
     JSON_SECRET_KEY: get('JSON_SECRET_KEY').required().asString(),
+
+    CLOUD_NAME: get('CLOUD_NAME').required().asString(),
+    CLOUD_API_KEY: get('CLOUD_API_KEY').required().asString(),
+    CLOUD_API_SECRET: get('CLOUD_API_SECRET').required().asString(),
+
 }

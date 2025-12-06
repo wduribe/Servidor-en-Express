@@ -3,12 +3,6 @@ import { CategoryModel } from "../../database/models/category.model";
 import { CustomError } from "../../domain/error/error";
 import { UpdateCategoryDto } from "../../domain/dtos/categories/update-category.dto";
 
-
-
-
-
-
-
 export class CategoryService {
 
     constructor() { }

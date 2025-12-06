@@ -1,15 +1,17 @@
 import { Document, model, Schema, Types } from "mongoose";
+import { Img } from "./user.model";
 
 export interface IProduct extends Document {
     name: string,
     description: string,
     available: boolean,
     price: number,
-    lastPrice?: number,
+    lastPrice: number,
     materials: string,
     cautions: string,
     category: Types.ObjectId,
     user: Types.ObjectId,
+    img: Img,
 }
 
 const productSchema = new Schema({
@@ -40,6 +42,13 @@ const productSchema = new Schema({
     cautions: {
         type: String,
         required: true,
+    },
+    img: {
+        type: Object,
+        default: {
+            url: '',
+            publicId: '',
+        }
     },
     category: {
         type: Schema.Types.ObjectId,
