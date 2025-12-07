@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 
-export const fileUploadMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
-    if (!req.files || !req.files.file) return res.status(400).json({ error: 'No hay archivos seleccionados' });
+export const validExistFileInUpdateProduct = (req: Request, res: Response, next: NextFunction) => {
+    
+    if (!req.files || !req.files.file) {
+        return next();
+    }
+
     if (Array.isArray(req.files.file)) return res.status(400).json({ error: 'Solo puede subir una imagen por producto' });
-    console.log(req.files)
+
     const file = req.files.file;
     const formats = ['png', 'jpg', 'jpeg', 'webp'];
     const extention = file.mimetype.split('/').at(1) ?? '';
@@ -12,5 +16,4 @@ export const fileUploadMiddleware = (req: Request, res: Response, next: NextFunc
     if (!formats.includes(extention)) return res.status(400).json({ error: 'Debe ingresar un formato de imagen valido png, jpg, jpeg, webp' });
 
     next();
-
-}
+} 
