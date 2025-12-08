@@ -26,6 +26,7 @@ export class ProductRoutes {
 
         routes.get('/', productController.getProducts);
         routes.get('/:id', productController.getProductById);
+        routes.get('/category/:categoryId', productController.getProductsByCategory);
 
         //Rutas protegidas
         routes.post('/:categoryId', [Validator.validateToken, Validator.validateRole, validExistCategory, fileUploadMiddleware], productController.createProduct);

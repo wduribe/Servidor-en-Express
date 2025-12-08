@@ -16,8 +16,7 @@ export interface IUser extends Document {
     role: Role,
     img: Img,
     
-
-    //* TODO --> crear atributo que guarde los pedidosS
+    //* TODO --> crear atributo que guarde historial de compras
 
 }
 

@@ -1,7 +1,8 @@
-import { Router, type Request, type Response } from 'express';
+import { Router } from 'express';
 import { AuthRoutes } from './auth/routes';
 import { CategoryRoutes } from './categories/routes';
 import { ProductRoutes } from './products/routes';
+import { OrderRoutes } from './orders/routes';
 
 export class AppRoutes {
 
@@ -17,6 +18,9 @@ export class AppRoutes {
 
     //Product
     router.use('/api/product', ProductRoutes.routes);
+
+    //Order
+    router.use('/api/order', OrderRoutes.routes);
 
     return router;
   }

@@ -93,4 +93,20 @@ export class ProductController {
             .catch(error => this.handleError(error, res));
     }
 
+    getProductsByCategory = (req: Request, res: Response) => {
+
+        const { categoryId } = req.params;
+        const { page = 1, limit = 6 } = req.query;
+
+        const [error, paginatioDto] = PaginationDto.create(+page, +limit);
+
+        if (!validatorAdapter.isValidMongoId(categoryId)) return res.status(400).json({ error: 'Ingrese un Id válido de categoria' });
+        if (error) return res.status(400).json({ error });
+
+        this.productService.getProductsByCategory({ categoryId, page: paginatioDto?.page!, limit: paginatioDto?.limit! })
+            .then(resp => res.json(resp))
+            .catch(error => this.handleError(error, res));
+
+    }
+
 }

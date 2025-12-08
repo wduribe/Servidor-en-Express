@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { CategoryModel } from "../../database/models/category.model";
 import { CustomError } from "../../domain/error/error";
 import { UpdateCategoryDto } from "../../domain/dtos/categories/update-category.dto";
+import { ProductModel } from "../../database/models/product.model";
 
 export class CategoryService {
 
@@ -49,7 +50,9 @@ export class CategoryService {
 
     async deleteCategory(id: Types.ObjectId) {
         try {
-            //*Validar si hay productos relacionados con la categoria, si los hay no se podrá eliminar
+            const products = await ProductModel.findOne({ category: id });
+            if(products) throw CustomError.badRequest('Existen productos en la categoria, primero debe vaciarla')
+
             await CategoryModel.findByIdAndDelete(id);
 
             return 'Categoria eliminada correctamete';

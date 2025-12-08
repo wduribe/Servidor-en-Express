@@ -4,4 +4,5 @@ export const regularExps = {
     regularCapital: /[A-Z]/,
     regularNumber: /\d/,
     regularSymbol: /[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]/,
+    phone: /^3\d{9}$/,
 }

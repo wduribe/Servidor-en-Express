@@ -5,7 +5,11 @@ import { PaginationDto } from "../../domain/dtos/shared/pagination.dto";
 import { CustomError } from "../../domain/error/error";
 import { UpdateProductDto } from "../../domain/dtos/products/update-product.dto";
 
-
+interface GetProductsByCategoryProps {
+    categoryId: string,
+    page: number,
+    limit: number,
+}
 
 export class ProductService {
 
@@ -123,5 +127,25 @@ export class ProductService {
             throw CustomError.internalServer(`${error}`);
         }
     }
+
+    async getProductsByCategory({ categoryId, page, limit }: GetProductsByCategoryProps) {
+
+        const [total, products] = await Promise.all([
+            ProductModel.countDocuments({ category: categoryId }),
+            ProductModel.find({ category: categoryId })
+                .skip((page - 1) * limit)
+                .limit(limit)
+        ]);
+
+        if (total === 0) throw CustomError.badRequest('No existen productos relacionados con el Id de la categoria');
+
+        return {
+            page,
+            limit,
+            total,
+            products
+        }
+    }
+
 
 }

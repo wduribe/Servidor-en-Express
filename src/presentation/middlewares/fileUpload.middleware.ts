@@ -4,7 +4,7 @@ export const fileUploadMiddleware = (req: Request, res: Response, next: NextFunc
 
     if (!req.files || !req.files.file) return res.status(400).json({ error: 'No hay archivos seleccionados' });
     if (Array.isArray(req.files.file)) return res.status(400).json({ error: 'Solo puede subir una imagen por producto' });
-    console.log(req.files)
+
     const file = req.files.file;
     const formats = ['png', 'jpg', 'jpeg', 'webp'];
     const extention = file.mimetype.split('/').at(1) ?? '';
